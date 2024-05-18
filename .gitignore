@@ -1,7 +1,6 @@
 # Dependencias de Node
 node_modules/
 
-
 # Archivos de entorno
 .env.development
 .env.production
