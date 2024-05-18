@@ -1,8 +1,8 @@
 # Dependencias de Node
 node_modules/
 
-# Configuraciones de Husky
-.husky/
 
 # Archivos de entorno
-.env
+.env.development
+.env.production
+.env.preproduction
