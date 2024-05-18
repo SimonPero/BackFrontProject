@@ -1,0 +1,36 @@
+#!/usr/bin/env sh
+. "${0%/*}/h"
+
+
+#!/bin/sh
+#
+# This pre-push script runs before 'git push' to execute specific commands 
+# based on the current branch:
+#
+# - For the 'development' branch, it runs 'npm run dev'.
+# - For the 'pre-production' branch, it runs 'npm run serve'.
+# - For the 'main' branch, it runs 'npm run start'.
+#
+# If the branch doesn't match any of the above, it displays an error message.
+#
+# Get the current branch
+#branch=\$(git rev-parse --abbrev-ref HEAD)
+#the rest of the code
+# Execute commands based on the branch
+
+echo "#!/bin/sh
+branch=\$(git rev-parse --abbrev-ref HEAD)
+
+if [ \"\$branch\" = \"development\" ]; then
+  echo \"Checking development branch...\"
+  npm run dev
+elif [ \"\$branch\" = \"pre-production\" ]; then
+  echo \"Checking pre-production branch...\"
+  npm run serve
+elif [ \"\$branch\" = \"main\" ]; then
+  echo \"Checking production branch...\"
+  npm run start
+else
+  echo \"Invalid branch for this operation.\"
+  exit 1
+fi" > .husky/pre-push
