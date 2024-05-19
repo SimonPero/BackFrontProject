@@ -8,13 +8,13 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2"
   },
   "scripts": {
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node build/index.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec ts-node src/index.ts",
-    "serve": "cross-env NODE_ENV=preproduction nodemon build/index.js",
-    "prepare": "husky install"
+    "serve": "cross-env NODE_ENV=preproduction nodemon build/index.js"
   }
 }
