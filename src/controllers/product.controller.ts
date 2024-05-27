@@ -5,7 +5,7 @@ export default class productManager{
     async addProduct(req: Request, res: Response) {
         try {
             const { category, name, description, design, size, price, stock } = req.body;
-            const product = await Product.create({ category, name, description, design, size, price, stock});
+            const product = await Product.create({ category, name, description, size, price, stock});
             res.status(201).json(product);
         } catch (error) {
             res.status(500).json(error);
