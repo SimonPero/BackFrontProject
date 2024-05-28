@@ -1,43 +1,77 @@
-// src/DAO/models/product.model.ts
-import { DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from '../../config/database';
 
-const Product = sequelize.define('Product', {
-    productID: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+// Define los atributos de tu modelo
+export interface ProductAttributes {
+  id: number;
+  category: string;
+  name: string;
+  description: string;
+  size: string;
+  price: number;
+  stock: number;
+  imageUrl: string | null;
+}
+
+// Define los atributos opcionales para la creación
+export interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
+
+// Define el modelo
+class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
+  public id!: number;
+  public category!: string;
+  public name!: string;
+  public description!: string;
+  public size!: string;
+  public price!: number;
+  public stock!: number;
+  public imageUrl!: string | null;
+
+  // timestamps!
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+}
+
+Product.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     category: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     name: {
-        type: DataTypes.STRING(60),
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     size: {
-        type: DataTypes.STRING(15),
-        allowNull: true,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     price: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+      type: DataTypes.FLOAT,
+      allowNull: false,
     },
     stock: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     imageUrl: {
-        type: DataTypes.TEXT,
-        allowNull: true,
+      type: DataTypes.STRING,
+      allowNull: true,
     },
-}, {
-    tableName: 'Products'
-});
+  },
+  {
+    sequelize,
+    tableName: 'products',
+  }
+);
 
 export default Product;
