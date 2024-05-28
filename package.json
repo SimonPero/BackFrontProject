@@ -19,7 +19,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.9.7",
     "sequelize": "^6.37.3",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "winston": "^3.13.0"
   },
   "scripts": {
     "build": "tsc",

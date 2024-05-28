@@ -1,36 +1,72 @@
-import { Request, Response } from 'express';
-import Product from '../DAO/models/product.model';
+import { Request, Response, NextFunction } from 'express';
+import ProductService from '../services/product.service';
 
-export default class productManager{
-    async addProduct(req: Request, res: Response) {
-        try {
-            const { category, name, description, size, price, stock } = req.body;
-            const imageUrl = req.file ? `/images/temp/${req.file.filename}` : null;
-            const product = await Product.create({
-                category,
-                name,
-                description,
-                size,
-                price,
-                stock,
-                imageUrl,
-            });
-            res.status(201).json(product);
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    }
+const productService = new ProductService();
 
-    async findAllProds(req: Request, res: Response) {
-        try {
-            const prods = await Product.findAll();
-            if (prods.length === 0) {
-                res.status(200).json({ message: 'La tabla de productos está vacía' });
-            } else {
-                res.status(200).json(prods);
-            }
-        } catch (error) {
-            res.status(500).json(error);
-        }
+export default class ProductController {
+  async addProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { category, name, description, size, price, stock } = req.body;
+      const imageUrl = req.file ? `/images/temp/${req.file.filename}` : null;
+
+      const productData = {
+        category,
+        name,
+        description,
+        size,
+        price,
+        stock,
+        imageUrl,
+      };
+
+      const product = await productService.createProduct(productData);
+      res.status(201).json(product);
+    } catch (error) {
+      next(error);
     }
+  }
+
+  async findAllProds(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const products = await productService.getAllProducts();
+      if (products.length === 0) {
+        res.status(200).json({ message: 'La tabla de productos está vacía' });
+      } else {
+        res.status(200).json(products);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async findProdById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      const product = await productService.getProductById(id);
+      res.status(200).json(product);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateProd(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { category, name, description, size, price, stock } = req.body;
+      const imageUrl = req.file ? `/images/temp/${req.file.filename}` : null;
+
+      const productData = {
+        category,
+        name,
+        description,
+        size,
+        price,
+        stock,
+        imageUrl,
+      };
+      const updatedProduct = await productService.updateProduct(req.params.id, productData);
+      res.status(200).json(updatedProduct);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
