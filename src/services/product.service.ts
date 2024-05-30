@@ -38,7 +38,8 @@ class ProductService {
       if (!product) {
         throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
       }
-      if (data.imageUrl === undefined) {
+
+      if (data.imageUrl === undefined || data.imageUrl === null) {
         data.imageUrl = product.imageUrl; // Mantén el valor anterior si no se proporciona un nuevo valor
       }
       await product.update(data);
