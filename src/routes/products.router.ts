@@ -6,7 +6,7 @@ const productRouter = Router();
 
 productRouter.get('/products', productController.findAllProds);
 productRouter.get('/products/:id', productController.findProdById);
-productRouter.put('/products/:id', productController.updateProd);
+productRouter.put('/products/:id', upload.single('image'), productController.updateProd);
 productRouter.post('/products', upload.single('image'), productController.addProduct);
 
 export default productRouter;
