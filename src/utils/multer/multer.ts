@@ -1,6 +1,7 @@
 // src/utils/multer/multer.ts
 import multer from 'multer';
 import path from 'path';
+import { v4 as uuidv4 } from 'uuid'; 
 
 // Configuración de Multer para el almacenamiento de productos
 const productStorage = multer.diskStorage({
@@ -8,8 +9,9 @@ const productStorage = multer.diskStorage({
     cb(null, path.join(__dirname, '../../public/images/temp'));
   },
   filename: (req, file, cb) => {
-    // Usa el nombre original del archivo
-    cb(null, file.originalname);
+    // Genera un nombre de archivo único
+    const uniqueName = `${uuidv4()}-${file.originalname}`;
+    cb(null, uniqueName);
   },
 });
 
