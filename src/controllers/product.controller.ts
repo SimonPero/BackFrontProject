@@ -69,4 +69,13 @@ export default class ProductController {
       next(error);
     }
   }
+  async deleteById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const prod = await productService.getProductById(req.params.id);
+      const result = await productService.deleteProductById(req.params.id, prod.imageUrl);
+      res.status(200).json(result)
+    } catch (error) {
+      next(error);
+    }
+  }
 }
