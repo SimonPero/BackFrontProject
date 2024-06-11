@@ -7,7 +7,7 @@ import path from 'path';
 import errorHandler from './middlewares/errorHandler';
 
 const app = express();
-const port = envConfig.port;
+const port = envConfig.port
 
 syncDatabase();
 

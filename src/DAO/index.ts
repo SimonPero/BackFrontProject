@@ -1,6 +1,5 @@
 import sequelize from '../config/database';
 import Product from './models/product.model';
-// Importa otros modelos aquí
 
 const syncDatabase = async () => {
     try {
@@ -16,5 +15,4 @@ export {
     sequelize,
     syncDatabase,
     Product,
-    // Exporta otros modelos aquí
 };
