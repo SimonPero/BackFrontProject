@@ -1,10 +1,16 @@
 import Product, { ProductAttributes, ProductCreationAttributes } from '../DAO/models/product.model';
 import { AppError, ErrorLevels } from '../middlewares/errorHandler';
+import fs from "fs"
+import path from 'path';
 
 class ProductService {
   async createProduct(data: ProductCreationAttributes): Promise<Product> {
     try {
       const product = await Product.create(data);
+      //buscar codigo para cuando falla la creacion
+      if (!product) {
+        throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
+      }
       return product;
     } catch (error) {
       throw new AppError('Error creating product', 500, error, ErrorLevels.WARNING);
@@ -14,6 +20,9 @@ class ProductService {
   async getAllProducts(): Promise<Product[]> {
     try {
       const products = await Product.findAll();
+      if (!products) {
+        throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
+      }
       return products;
     } catch (error) {
       throw new AppError('Error fetching products', 500, error, ErrorLevels.CRITICAL);
@@ -28,7 +37,7 @@ class ProductService {
       }
       return product;
     } catch (error) {
-      throw new AppError('Error fetching product', 500, error, ErrorLevels.CRITICAL);
+      throw new AppError('Error fetching product', 404, error, ErrorLevels.CRITICAL);
     }
   }
 
@@ -38,14 +47,37 @@ class ProductService {
       if (!product) {
         throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
       }
-
-      if (data.imageUrl === undefined || data.imageUrl === null) {
+      if (!data.imageUrl) {
         data.imageUrl = product.imageUrl; // Mantén el valor anterior si no se proporciona un nuevo valor
       }
       await product.update(data);
       return product;
     } catch (error) {
       throw new AppError('Error updating product', 500, error, ErrorLevels.CRITICAL);
+    }
+  }
+  async deleteProductById(productId: string, imgUrl: string | null) {
+    try {
+      const deletedCount = await Product.destroy({
+        where: {
+          id: productId
+        }
+      });
+      if (deletedCount === 0) {
+        throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
+      }
+      // Elimina la imagen del sistema de archivos
+      if (imgUrl !== null) {
+        const imagePath = path.join('src/public', imgUrl); 
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            throw new AppError('Error deleting image', 500, err, ErrorLevels.CRITICAL);
+          } 
+        });
+      }
+      return "borrado"
+    } catch (error) {
+      throw new AppError('Error deleting product', 500, error, ErrorLevels.CRITICAL);
     }
   }
 }
