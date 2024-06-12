@@ -11,7 +11,8 @@ const config = {
   port: process.env.PORT || '3000',
   database: process.env.DATABASE || '',
   mySqlUser: process.env.MYSQLUSER || '',
-  mySqlPass: process.env.MYSQLPASS || ''
+  mySqlPass: process.env.MYSQLPASS || '',
+  jwtSecret:process.env.JWT_SECRETE || ''
 };
 
 if (!config.database || !config.mySqlUser || !config.mySqlPass) {

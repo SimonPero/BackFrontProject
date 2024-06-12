@@ -5,6 +5,7 @@ import { syncDatabase } from './DAO';
 import cors from 'cors';
 import path from 'path';
 import errorHandler from './middlewares/errorHandler';
+import usersRouter from './routes/users.router';
 
 const app = express();
 const port = envConfig.port
@@ -19,6 +20,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use('/api', productRouter);
+app.use('/api/users/', usersRouter)
 app.use('/images/temp', express.static(path.join(__dirname, '/public/images/temp')));
 
 app.use(errorHandler)
