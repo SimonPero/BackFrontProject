@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import winston from 'winston';
+import { ZodError } from 'zod';
 
 // Configuración de winston con niveles de severidad personalizados
 const logger = winston.createLogger({
@@ -36,6 +37,13 @@ class AppError extends Error {
 }
 
 export default function errorHandler(err: AppError, _req: Request, res: Response, _next: NextFunction) {
+  if(err instanceof ZodError){
+    const errors = err.issues.map((issue) => ({
+      path: issue.path.join('.'),
+      message: issue.message,
+    }));
+    return res.status(400).json({ errors });
+  }
   // Definir el nivel de severidad por defecto si no está presente
   const level = err.level || ErrorLevels.CRITICAL;
 
