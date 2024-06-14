@@ -6,7 +6,6 @@ const usersController = new UsersController();
 const usersRouter = Router();
 
 usersRouter.post("/register", validatorSchema(schema.register,"body"), usersController.createUser)
-
 usersRouter.post("/login", validatorSchema(schema.login,"body"), usersController.logUsers)
 
 export default usersRouter;

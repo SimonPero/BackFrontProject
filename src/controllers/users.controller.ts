@@ -21,7 +21,6 @@ export default class UsersController {
             const user = await userService.createUser(userData);
             res.status(201).json(user)
         } catch (error) {
-            console.log(error)
             next(error)
         }
     }

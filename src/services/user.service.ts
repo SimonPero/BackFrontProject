@@ -14,6 +14,7 @@ export default class UserService {
             throw new AppError('Error fetching users', 500, error, ErrorLevels.CRITICAL)
         }
     }
+
     async getUserByEmail(email: string): Promise<User | any> {
         if (typeof email !== 'string' || !email.includes('@')) {
             throw new AppError('Invalid email format', 400, null, ErrorLevels.WARNING);
@@ -47,16 +48,12 @@ export default class UserService {
     async logUser(email: string, password: string) {
         try {
             const foundUser = await this.getUserByEmail(email)
-
-            console.log(password)
-            console.log(foundUser)
             const isMatch = await bcrypt.compare(password, foundUser.password);
             if (!isMatch) {
                 throw new AppError('User not found', 404, null, ErrorLevels.WARNING)
             }
             return foundUser
         } catch (error) {
-            console.log(error)
             throw new AppError('Error fetching user', 500, error, ErrorLevels.WARNING)
         }
     }
