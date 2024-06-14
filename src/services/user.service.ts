@@ -1,7 +1,5 @@
 import User, { UserAttributes, UserCreationAttributes } from "../DAO/models/user.model";
 import { AppError, ErrorLevels } from "../middlewares/errorHandler";
-import config from "../config/env.config";
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 export default class UserService {
@@ -16,24 +14,26 @@ export default class UserService {
             throw new AppError('Error fetching users', 500, error, ErrorLevels.CRITICAL)
         }
     }
-    async getUserByEmail(email: string): Promise<User> {
+    async getUserByEmail(email: string): Promise<User | any> {
+        if (typeof email !== 'string' || !email.includes('@')) {
+            throw new AppError('Invalid email format', 400, null, ErrorLevels.WARNING);
+        }
+
         try {
-            const user = await User.findOne({ where: { email } })
-            if (!user) {
-                throw new AppError('users table is empty', 404, null, ErrorLevels.WARNING);
-            }
-            return user
+            const user = await User.findOne({ where: { email } });
+            return user;
         } catch (error) {
-            throw new AppError('Error fetching users', 500, error, ErrorLevels.CRITICAL)
+            throw new AppError('Error fetching user', 500, error, ErrorLevels.CRITICAL);
         }
     }
+
     async createUser(userData: UserCreationAttributes): Promise<User> {
         try {
+            console.log(userData)
             const foundUser = await this.getUserByEmail(userData.email)
-            if (foundUser.email === userData.email) {
+            if (foundUser) {
                 throw new AppError('User already exist', 400, null, ErrorLevels.INFO);
             }
-
             const user = await User.create(userData);
             if (!user) {
                 throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
@@ -44,16 +44,20 @@ export default class UserService {
         }
     }
 
-    async logUser(email: string, password: string){
-        const foundUser = await this.getUserByEmail(email)
-        if (email === foundUser.email) {
-            throw new AppError('User already exist', 400, null, ErrorLevels.INFO);
+    async logUser(email: string, password: string) {
+        try {
+            const foundUser = await this.getUserByEmail(email)
+
+            console.log(password)
+            console.log(foundUser)
+            const isMatch = await bcrypt.compare(password, foundUser.password);
+            if (!isMatch) {
+                throw new AppError('User not found', 404, null, ErrorLevels.WARNING)
+            }
+            return foundUser
+        } catch (error) {
+            console.log(error)
+            throw new AppError('Error fetching user', 500, error, ErrorLevels.WARNING)
         }
-        const isMatch = await bcrypt.compare(password, foundUser.password);
-        if (!isMatch) {
-            throw new AppError('User not found', 404, null, ErrorLevels.WARNING)
-        }
-        const token = jwt.sign({ userId: foundUser.id }, config.jwtSecret, { expiresIn: '1d' });
-        return token
     }
 }

@@ -21,7 +21,7 @@ class ProductService {
     try {
       const products = await Product.findAll();
       if (!products) {
-        throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
+        throw new AppError('Products not found', 404, null, ErrorLevels.WARNING);
       }
       return products;
     } catch (error) {

@@ -12,7 +12,7 @@ const config = {
   database: process.env.DATABASE || '',
   mySqlUser: process.env.MYSQLUSER || '',
   mySqlPass: process.env.MYSQLPASS || '',
-  jwtSecret:process.env.JWT_SECRETE || ''
+  jwtSecret:process.env.JWT_SECRET || ''
 };
 
 if (!config.database || !config.mySqlUser || !config.mySqlPass) {

@@ -9,4 +9,7 @@ export const register = z.object({
     email: z.string().email(),
     surname: z.string().min(6),
     password: z.string().min(5),
+    phone:z.string(),
+    age:z.number(),
+    location:z.string(),
 });

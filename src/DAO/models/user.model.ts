@@ -67,7 +67,7 @@ User.init(
     },
     {
       sequelize,
-      tableName: 'products',
+      tableName: 'customers',
     }
   );
 

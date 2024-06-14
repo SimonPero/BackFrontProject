@@ -1,26 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from 'bcrypt';
 import UserService from "../services/user.service";
+import { createUserToken } from "../utils/jwt/jwt";
 const userService = new UserService()
 
 export default class UsersController {
     async createUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { name, surname, email, phone, location, age, password} = req.body;
+            const { name, surname, email, password, phone, location, age } = req.body;
             const hashedPassword = await bcrypt.hash(password, 10);
             const userData = {
                 name,
                 surname,
                 email,
-                hashedPassword,
+                password: hashedPassword,
                 phone,
                 location,
                 age,
-                password
             };
-            const user = userService.createUser(userData);
+            const user = await userService.createUser(userData);
             res.status(201).json(user)
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
@@ -28,8 +29,8 @@ export default class UsersController {
     async logUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password } = req.body;
-            const token = userService.logUser(email, password)
-            res.json({ token }); 
+            const user = await userService.logUser(email, password)
+            createUserToken(user, res, req)
         } catch (error) {
             next(error)
         }
