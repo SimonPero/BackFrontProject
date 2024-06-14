@@ -41,7 +41,6 @@ app.use(expressSession.default({
     store: sessionStore
 }));
 
-
 syncDatabase();
 
 app.use(cors());
