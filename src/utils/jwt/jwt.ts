@@ -11,8 +11,6 @@ function signToken(user: UserAttributes) {
 
 export function createUserToken(user: UserAttributes, res:Response, req: any) {
     const token = signToken(user)
-    console.log(user)
-    console.log("token", token)
     req.session.jwt = token
-    return res.status(201).json({user})
+    return res.status(201).json({user, token })
 }

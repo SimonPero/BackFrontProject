@@ -1,4 +1,4 @@
-import User, { UserAttributes, UserCreationAttributes } from "../DAO/models/user.model";
+import User, { UserCreationAttributes } from "../DAO/models/user.model";
 import { AppError, ErrorLevels } from "../middlewares/errorHandler";
 import bcrypt from 'bcrypt';
 
@@ -30,7 +30,6 @@ export default class UserService {
 
     async createUser(userData: UserCreationAttributes): Promise<User> {
         try {
-            console.log(userData)
             const foundUser = await this.getUserByEmail(userData.email)
             if (foundUser) {
                 throw new AppError('User already exist', 400, null, ErrorLevels.INFO);
