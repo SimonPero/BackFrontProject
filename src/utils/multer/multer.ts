@@ -5,10 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 // Configuración de Multer para el almacenamiento de productos
 const productStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: (_req, _file, cb) => {
     cb(null, path.join(__dirname, '../../public/images/temp'));
   },
-  filename: (req, file, cb) => {
+  filename: (_req, file, cb) => {
     // Genera un nombre de archivo único
     const uniqueName = `${uuidv4()}-${file.originalname}`;
     cb(null, uniqueName);
@@ -17,7 +17,7 @@ const productStorage = multer.diskStorage({
 
 const upload = multer({
   storage: productStorage,
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, file, cb) => {
     if (!file.mimetype.startsWith('image/')) {
       // Pasar 'null' como primer argumento y 'false' para rechazar el archivo
       cb(null, false);
