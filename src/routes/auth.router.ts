@@ -5,14 +5,14 @@ import { createUserToken } from "../utils/jwt/jwt";
 const authRouter = Router();
 const userService = new UserService();
 
-authRouter.post("/auth/token", async (req:Request, res:Response)=>{
-    const {email, name, surname} = req.body;
+authRouter.post("/auth/token", async (req: any, res: Response) => {
+    const { email, name, surname } = req.body;
 
     //verify if user exist or create one
     let user = await userService.getUserByEmail(email)
-    if(!user){
+    if (!user) {
         user = await userService.createUser({
-            email, 
+            email,
             name,
             surname,
             phone: "+54",
@@ -21,6 +21,7 @@ authRouter.post("/auth/token", async (req:Request, res:Response)=>{
             password: ""
         })
     }
+    req.session = {}
     createUserToken(user, res, req)
 })
 
