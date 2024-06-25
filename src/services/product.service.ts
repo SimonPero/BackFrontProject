@@ -13,7 +13,11 @@ class ProductService {
       }
       return product;
     } catch (error) {
-      throw new AppError('Error creating product', 500, error, ErrorLevels.WARNING);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError('Error creating product', 500, error, ErrorLevels.WARNING);
+      }
     }
   }
 
@@ -25,7 +29,11 @@ class ProductService {
       }
       return products;
     } catch (error) {
-      throw new AppError('Error fetching products', 500, error, ErrorLevels.CRITICAL);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError('Error fetching products', 500, error, ErrorLevels.CRITICAL);
+      }
     }
   }
 
@@ -37,7 +45,11 @@ class ProductService {
       }
       return product;
     } catch (error) {
-      throw new AppError('Error fetching product', 404, error, ErrorLevels.CRITICAL);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError('Error fetching product', 404, error, ErrorLevels.CRITICAL);
+      }
     }
   }
 
@@ -53,7 +65,11 @@ class ProductService {
       await product.update(data);
       return product;
     } catch (error) {
-      throw new AppError('Error updating product', 500, error, ErrorLevels.CRITICAL);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError('Error updating product', 500, error, ErrorLevels.CRITICAL);
+      }
     }
   }
   async deleteProductById(productId: string, imgUrl: string | null) {
@@ -68,16 +84,20 @@ class ProductService {
       }
       // Elimina la imagen del sistema de archivos
       if (imgUrl !== null) {
-        const imagePath = path.join('src/public', imgUrl); 
+        const imagePath = path.join('src/public', imgUrl);
         fs.unlink(imagePath, (err) => {
           if (err) {
             throw new AppError('Error deleting image', 500, err, ErrorLevels.CRITICAL);
-          } 
+          }
         });
       }
       return "borrado"
     } catch (error) {
-      throw new AppError('Error deleting product', 500, error, ErrorLevels.CRITICAL);
+      if (error instanceof AppError) {
+        throw error;
+      } else {
+        throw new AppError('Error deleting product', 500, error, ErrorLevels.CRITICAL);
+      }
     }
   }
 }

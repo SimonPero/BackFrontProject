@@ -11,7 +11,11 @@ export default class UserService {
             }
             return (users)
         } catch (error) {
-            throw new AppError('Error fetching users', 500, error, ErrorLevels.CRITICAL)
+            if (error instanceof AppError) {
+                throw error;
+            } else {
+                throw new AppError('Error fetching users', 500, error, ErrorLevels.CRITICAL)
+            }
         }
     }
 
@@ -24,7 +28,11 @@ export default class UserService {
             const user = await User.findOne({ where: { email } });
             return user;
         } catch (error) {
-            throw new AppError('Error fetching user', 500, error, ErrorLevels.CRITICAL);
+            if (error instanceof AppError) {
+                throw error;
+            } else {
+                throw new AppError('Error fetching user', 500, error, ErrorLevels.CRITICAL);
+            }
         }
     }
 
@@ -40,20 +48,28 @@ export default class UserService {
             }
             return user
         } catch (error) {
-            throw new AppError('Error creating user', 500, error, ErrorLevels.WARNING);
+            if (error instanceof AppError) {
+                throw error;
+            } else {
+                throw new AppError('Error creating user', 500, error, ErrorLevels.WARNING);
+            }
         }
     }
 
     async logUser(email: string, password: string) {
         try {
-            const foundUser = await this.getUserByEmail(email)
+            const foundUser = await this.getUserByEmail(email);
             const isMatch = await bcrypt.compare(password, foundUser.password);
             if (!isMatch) {
-                throw new AppError('User not found', 404, null, ErrorLevels.WARNING)
+                throw new AppError('Password does not match', 401, null, ErrorLevels.WARNING);
             }
-            return foundUser
+            return foundUser;
         } catch (error) {
-            throw new AppError('Error fetching user', 500, error, ErrorLevels.WARNING)
+            if (error instanceof AppError) {
+                throw error;
+            } else {
+                throw new AppError('User not found', 404, error, ErrorLevels.WARNING);
+            }
         }
     }
 }
