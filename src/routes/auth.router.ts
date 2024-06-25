@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Response, Router } from "express";
 import UserService from "../services/user.service";
 import { createUserToken } from "../utils/jwt/jwt";
 

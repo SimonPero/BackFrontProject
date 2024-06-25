@@ -28,10 +28,10 @@ export default class UsersController {
     async logUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password } = req.body;
-            const user = await userService.logUser(email, password)
-            createUserToken(user, res, req)
-        } catch (error) {
-            next(error)
+            const user = await userService.logUser(email, password);
+            createUserToken(user, res, req); 
+        } catch (error: any) {
+            next(error); 
         }
     }
 }

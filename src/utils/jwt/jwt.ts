@@ -8,10 +8,12 @@ function signToken(user: UserAttributes) {
     return token
 }
 
-export function createUserToken(user: UserAttributes, res:Response, req:any) {
-    const token = signToken(user)
-    req.session.jwt = token
-    req.session.user = user
-    console.log("1")
-    return res.status(201).json({user, token })
+export function createUserToken(user: UserAttributes, res: Response, req: any) {
+    const token = signToken(user);
+    req.session = req.session || {};
+
+    req.session.jwt = token;
+    req.session.user = user;
+    
+    return res.status(201).json({ user, token });
 }
