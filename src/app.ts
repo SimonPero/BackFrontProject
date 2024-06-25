@@ -7,15 +7,22 @@ import path from 'path';
 import errorHandler from './middlewares/errorHandler';
 import usersRouter from './routes/users.router';
 import authRouter from './routes/auth.router';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = envConfig.port
 
-
 syncDatabase();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // if cookies are needed
+    allowedHeaders: 'Authorization,Origin,X-Requested-With,Content-Type,Accept'
+}));
+
 app.use(express.json());
+app.use(cookieParser())
 
 app.get("/", (_req: Request, res: Response) => {
     res.send('Halloooo¡¡¡ America Ya :D ');
