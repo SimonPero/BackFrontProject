@@ -3,7 +3,7 @@ import sequelize from '../../config/database';
 
 // Define los atributos de tu modelo
 export interface ProductAttributes {
-  productID: number;
+  id: number;
   category: string;
   name: string;
   description: string;
@@ -14,11 +14,11 @@ export interface ProductAttributes {
 }
 
 // Define los atributos opcionales para la creación
-export interface ProductCreationAttributes extends Optional<ProductAttributes, 'productID'> { }
+export interface ProductCreationAttributes extends Optional<ProductAttributes, 'id'> {}
 
 // Define el modelo
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
-  public productID!: number;
+  public id!: number;
   public category!: string;
   public name!: string;
   public description!: string;
@@ -34,7 +34,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
 
 Product.init(
   {
-    productID: {
+    id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
