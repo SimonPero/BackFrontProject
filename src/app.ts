@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import envConfig from "./config/env.config"
 import productRouter from './routes/products.router';
 import { syncDatabase } from './DAO';
@@ -24,9 +24,6 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser())
 
-app.get("/", (_req: Request, res: Response) => {
-    res.send('Halloooo¡¡¡ America Ya :D ');
-});
 app.use('/api', authRouter);
 app.use('/api', productRouter);
 app.use('/api/users/', usersRouter)

@@ -76,7 +76,7 @@ class ProductService {
     try {
       const deletedCount = await Product.destroy({
         where: {
-          id: productId
+          productID: productId
         }
       });
       if (deletedCount === 0) {

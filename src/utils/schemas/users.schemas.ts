@@ -6,9 +6,9 @@ export const login = z.object({
 });
 
 export const register = z.object({
-    name: z.string().min(6),
+    name: z.string().min(1),
     email: z.string().email(),
-    surname: z.string().min(6),
+    surname: z.string().min(1),
     password: z.string().min(5),
     phone:z.string(),
     age:z.number(),
