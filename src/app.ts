@@ -8,6 +8,7 @@ import errorHandler from './middlewares/errorHandler';
 import usersRouter from './routes/users.router';
 import authRouter from './routes/auth.router';
 import cookieParser from 'cookie-parser';
+import cartRouter from './routes/cart.router';
 
 const app = express();
 const port = envConfig.port
@@ -26,6 +27,7 @@ app.use(cookieParser())
 
 app.use('/api', authRouter);
 app.use('/api', productRouter);
+app.use('/api/cart', cartRouter);
 app.use('/api/users/', usersRouter)
 app.use('/images/temp', express.static(path.join(__dirname, '/public/images/temp')));
 

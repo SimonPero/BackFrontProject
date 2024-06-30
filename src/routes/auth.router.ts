@@ -21,8 +21,7 @@ authRouter.post("/auth/token", async (req: any, res: Response) => {
             password: ""
         })
     }
-    req.session = {}
-    createUserToken(user, res, req)
+    createUserToken(user, res)
 })
 
 export default authRouter;

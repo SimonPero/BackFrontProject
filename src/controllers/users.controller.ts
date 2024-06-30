@@ -29,9 +29,9 @@ export default class UsersController {
         try {
             const { email, password } = req.body;
             const user = await userService.logUser(email, password);
-            createUserToken(user, res, req); 
+            createUserToken(user, res);
         } catch (error: any) {
-            next(error); 
+            next(error);
         }
     }
 }

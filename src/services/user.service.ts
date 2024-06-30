@@ -1,7 +1,9 @@
 import User, { UserCreationAttributes } from "../DAO/models/user.model";
 import { AppError, ErrorLevels } from "../middlewares/errorHandler";
 import bcrypt from 'bcrypt';
+import CartService from "./cart/cart.service";
 
+const cartService = new CartService();
 export default class UserService {
     async getAllUsers(): Promise<User[]> {
         try {
@@ -43,6 +45,7 @@ export default class UserService {
                 throw new AppError('User already exist', 400, null, ErrorLevels.INFO);
             }
             const user = await User.create(userData);
+            cartService.createCart(user.customerID)
             if (!user) {
                 throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
             }
