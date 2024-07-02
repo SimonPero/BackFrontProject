@@ -33,7 +33,6 @@ export default class CartService {
     async addItemToCart(customerID: number, productID: number, quantity: number): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
             const cart = await this.getCartById(customerID)
-            console.log(cart.cart.cartID)
             cartItemsService.addItemsToCart(cart.cart.cartID, productID, quantity)
             return cart
         } catch (error) {

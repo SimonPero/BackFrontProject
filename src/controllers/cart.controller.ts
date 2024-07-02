@@ -6,7 +6,7 @@ const cartService = new CartService();
 export default class CartController {
     async getCartById(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.id);
+            const id = parseInt(req.params.CustomerID);
             const cart = await cartService.getCartById(id)
             res.status(201).json(cart)
         } catch (error) {

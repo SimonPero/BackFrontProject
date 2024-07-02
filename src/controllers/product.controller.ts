@@ -18,7 +18,6 @@ export default class ProductController {
         stock,
         imageUrl,
       };
-
       const product = await productService.createProduct(productData);
       res.status(201).json(product);
     } catch (error) {
@@ -53,7 +52,6 @@ export default class ProductController {
     try {
       const { category, name, description, size, price, stock } = req.body;
       const imageUrl = req.file ? `/images/temp/${req.file.filename}` : null;
-
       const productData = {
         category,
         name,

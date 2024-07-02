@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from 'express';
 
 function authenticateJWT(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
-  console.log(authHeader)
   if (authHeader) {
     const token = authHeader.split(' ')[1]; // Obtén el token después de 'Bearer '
     jwt.verify(token, envConfig.jwtSecret, (err: any) => {

@@ -2,6 +2,8 @@ import { Router } from 'express';
 import productManager from '../controllers/product.controller';
 import upload from '../utils/multer/multer';
 import authenticateJWT from '../middlewares/auth';
+import validatorSchema from "../middlewares/validatorSchema";
+import * as schema from "../utils/schemas/product.schema";
 const productController = new productManager()
 const productRouter = Router();
 

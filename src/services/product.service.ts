@@ -9,7 +9,7 @@ class ProductService {
       const product = await Product.create(data);
       //buscar codigo para cuando falla la creacion
       if (!product) {
-        throw new AppError('Product not found', 404, null, ErrorLevels.WARNING);
+        throw new AppError('Product not created', 404, null, ErrorLevels.WARNING);
       }
       return product;
     } catch (error) {

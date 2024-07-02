@@ -4,6 +4,7 @@ const cartController = new CartController();
 const cartRouter = Router();
 
 
-cartRouter.get("/getCart/:id", cartController.getCartById)
+cartRouter.get("/getCart/:CustomerID", cartController.getCartById)
+cartRouter.post("/addToCart", cartController.getCartById)
 
 export default cartRouter

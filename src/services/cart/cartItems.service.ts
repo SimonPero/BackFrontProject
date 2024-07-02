@@ -1,5 +1,5 @@
-import { CartItems } from "../DAO";
-import { AppError, ErrorLevels } from "../middlewares/errorHandler";
+import { CartItems } from "../../DAO";
+import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 export default class CartItemsService {
     async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems> {
         try {
