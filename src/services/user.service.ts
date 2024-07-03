@@ -3,8 +3,8 @@ import { AppError, ErrorLevels } from "../middlewares/errorHandler";
 import bcrypt from 'bcrypt';
 import CartService from "./cart/cart.service";
 
-const cartService = new CartService();
 export default class UserService {
+    constructor(private cartService: CartService) { }
     async getAllUsers(): Promise<User[]> {
         try {
             const users = await User.findAll()
@@ -22,10 +22,6 @@ export default class UserService {
     }
 
     async getUserByEmail(email: string): Promise<User | any> {
-        if (typeof email !== 'string' || !email.includes('@')) {
-            throw new AppError('Invalid email format', 400, null, ErrorLevels.WARNING);
-        }
-
         try {
             const user = await User.findOne({ where: { email } });
             return user;
@@ -45,7 +41,7 @@ export default class UserService {
                 throw new AppError('User already exist', 400, null, ErrorLevels.INFO);
             }
             const user = await User.create(userData);
-            cartService.createCart(user.customerID)
+            this.cartService.createCart(user.customerID)
             if (!user) {
                 throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
             }

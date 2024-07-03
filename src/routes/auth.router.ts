@@ -1,17 +1,16 @@
 import { Response, Router } from "express";
-import UserService from "../services/user.service";
 import { createUserToken } from "../utils/jwt/jwt";
+import { services } from "../utils/serviceContainer";
 
 const authRouter = Router();
-const userService = new UserService();
 
 authRouter.post("/auth/token", async (req: any, res: Response) => {
     const { email, name, surname } = req.body;
 
     //verify if user exist or create one
-    let user = await userService.getUserByEmail(email)
+    let user = await services.userService.getUserByEmail(email)
     if (!user) {
-        user = await userService.createUser({
+        user = await services.userService.createUser({
             email,
             name,
             surname,

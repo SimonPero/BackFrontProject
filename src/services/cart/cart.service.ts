@@ -1,9 +1,16 @@
 import { Cart, CartItems } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import CartItemsService from "./cartItems.service";
-const cartItemsService = new CartItemsService();
+import UserService from "../user.service";
 
 export default class CartService {
+    private userService!: UserService;
+
+    constructor(private cartItemsService: CartItemsService) {}
+
+    setUserService(userService: UserService) {
+        this.userService = userService;
+    }
     async createCart(customerID: number): Promise<Cart> {
         try {
             const cart = await Cart.create({ customerID });
@@ -19,7 +26,7 @@ export default class CartService {
             if (!foundCart) {
                 throw new AppError('Cart not found', 404, null, ErrorLevels.WARNING);
             }
-            const items = await cartItemsService.getCartItemsByCartId(foundCart.cartID);
+            const items = await this.cartItemsService.getCartItemsByCartId(foundCart.cartID);
             return { cart: foundCart, items };
         } catch (error) {
             if (error instanceof AppError) {
@@ -30,10 +37,17 @@ export default class CartService {
         }
     }
 
-    async addItemToCart(customerID: number, productID: number, quantity: number): Promise<{ cart: Cart, items: CartItems[] }> {
+    async addItemToCart(email: string, productID: string, quantity: string): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
-            const cart = await this.getCartById(customerID)
-            cartItemsService.addItemsToCart(cart.cart.cartID, productID, quantity)
+            const parsedProductID = parseInt(productID);
+            const parsedQuantity = parseInt(quantity);
+
+            if (isNaN(parsedProductID) || isNaN(parsedQuantity)) {
+                throw new AppError('Invalidad data', 400, null, ErrorLevels.WARNING)
+            }
+            const user = await this.userService.getUserByEmail(email)
+            const cart = await this.getCartById(user.customerID)
+            this.cartItemsService.addItemsToCart(cart.cart.cartID, parsedProductID, parsedQuantity)
             return cart
         } catch (error) {
             if (error instanceof AppError) {

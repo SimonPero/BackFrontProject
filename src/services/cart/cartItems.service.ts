@@ -1,18 +1,18 @@
 import { CartItems } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 export default class CartItemsService {
-    async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems> {
+    async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems[]> {
         try {
-            const existingCartItem = await CartItems.findOne({ where: { cartID, productID } });
-            if (existingCartItem) {
-                existingCartItem.quantity += quantity;
-                await existingCartItem.save();
-                return existingCartItem;
+            let cartItem = await CartItems.findOne({ where: { cartID, productID } });
+            if (cartItem) {
+                cartItem.quantity += quantity;
+                await cartItem.save();
             } else {
-                const cartItem = await CartItems.create({ cartID, productID, quantity });
-                return cartItem;
+                cartItem = await CartItems.create({ cartID, productID, quantity });
             }
+            return this.getCartItemsByCartId(cartID);
         } catch (error) {
+            console.error('Error in addItemsToCart:', error);
             if (error instanceof AppError) {
                 throw error;
             } else {
@@ -24,11 +24,12 @@ export default class CartItemsService {
     async getCartItemsByCartId(cartID: number): Promise<CartItems[]> {
         try {
             const cartItems = await CartItems.findAll({ where: { cartID } });
-            if (!cartItems) {
-                throw new AppError('Cart Items not found', 404, null, ErrorLevels.WARNING);
+            if (!cartItems || cartItems.length === 0) {
+                return [];
             }
             return cartItems;
         } catch (error) {
+            console.error('Error in getCartItemsByCartId:', error);
             if (error instanceof AppError) {
                 throw error;
             } else {
