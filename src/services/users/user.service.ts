@@ -1,10 +1,11 @@
-import User, { UserCreationAttributes } from "../DAO/models/user.model";
-import { AppError, ErrorLevels } from "../middlewares/errorHandler";
+import User, { UserCreationAttributes } from "../../DAO/models/user.model";
+import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import bcrypt from 'bcrypt';
-import CartService from "./cart/cart.service";
+import { IUserService } from "./IUserService";
+import { ICartService } from "../cart/ICartService";
 
-export default class UserService {
-    constructor(private cartService: CartService) { }
+export default class UserService implements IUserService {
+    constructor(private cartService: ICartService) { }
     async getAllUsers(): Promise<User[]> {
         try {
             const users = await User.findAll()
@@ -24,6 +25,9 @@ export default class UserService {
     async getUserByEmail(email: string): Promise<User | any> {
         try {
             const user = await User.findOne({ where: { email } });
+            if (!user) {
+                throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
+            }
             return user;
         } catch (error) {
             if (error instanceof AppError) {
@@ -55,7 +59,7 @@ export default class UserService {
         }
     }
 
-    async logUser(email: string, password: string) {
+    async logUser(email: string, password: string): Promise<User> {
         try {
             const foundUser = await this.getUserByEmail(email);
             const isMatch = await bcrypt.compare(password, foundUser.password);
