@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import ProductService from '../services/product.service';
+import { services } from '../utils/serviceContainer';
 
-const productService = new ProductService();
+const productService = services.getProductService()
 
 export default class ProductController {
   async addProduct(req: Request, res: Response, next: NextFunction) {

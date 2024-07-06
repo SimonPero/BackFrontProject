@@ -1,5 +1,5 @@
-import Product, { ProductAttributes, ProductCreationAttributes } from '../DAO/models/product.model';
-import { AppError, ErrorLevels } from '../middlewares/errorHandler';
+import Product, { ProductAttributes, ProductCreationAttributes } from '../../DAO/models/product.model';
+import { AppError, ErrorLevels } from '../../middlewares/errorHandler';
 import fs from "fs"
 import path from 'path';
 

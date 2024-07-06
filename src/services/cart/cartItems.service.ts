@@ -1,6 +1,8 @@
 import { CartItems } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
-export default class CartItemsService {
+import { ICartItemsService } from "./ICarItemsService";
+
+export default class CartItemsService implements ICartItemsService{
     async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems[]> {
         try {
             let cartItem = await CartItems.findOne({ where: { cartID, productID } });

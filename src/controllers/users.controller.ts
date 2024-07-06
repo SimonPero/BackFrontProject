@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import { createUserToken } from "../utils/jwt/jwt";
 import { services } from "../utils/serviceContainer";
 
+const userService = services.getUserService()
+
 export default class UsersController {
     async createUser(req: Request, res: Response, next: NextFunction) {
         try {
@@ -17,7 +19,7 @@ export default class UsersController {
                 location,
                 age,
             };
-            const user = await services.userService.createUser(userData);
+            const user = await userService.createUser(userData);
             res.status(201).json(user)
         } catch (error) {
             next(error)
@@ -27,7 +29,7 @@ export default class UsersController {
     async logUsers(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, password } = req.body;
-            const user = await services.userService.logUser(email, password);
+            const user = await userService.logUser(email, password);
             createUserToken(user, res);
         } catch (error: any) {
             next(error);

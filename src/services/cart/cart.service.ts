@@ -1,16 +1,18 @@
 import { Cart, CartItems } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
-import CartItemsService from "./cartItems.service";
-import UserService from "../user.service";
+import { ICartService } from "./ICartService";
+import { IUserService } from "../users/IUserService";
+import { ICartItemsService } from "./ICarItemsService";
 
-export default class CartService {
-    private userService!: UserService;
+export default class CartService implements ICartService{
+    private userService!: IUserService;
 
-    constructor(private cartItemsService: CartItemsService) {}
+    constructor(private cartItemsService: ICartItemsService) {}
 
-    setUserService(userService: UserService) {
+    setUserService(userService: IUserService) {
         this.userService = userService;
     }
+    
     async createCart(customerID: number): Promise<Cart> {
         try {
             const cart = await Cart.create({ customerID });
