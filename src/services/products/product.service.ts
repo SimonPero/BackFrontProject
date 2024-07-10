@@ -2,8 +2,9 @@ import Product, { ProductAttributes, ProductCreationAttributes } from '../../DAO
 import { AppError, ErrorLevels } from '../../middlewares/errorHandler';
 import fs from "fs"
 import path from 'path';
+import { IProductService } from './IProductService';
 
-class ProductService {
+class ProductService implements IProductService {
   async createProduct(data: ProductCreationAttributes): Promise<Product> {
     try {
       const product = await Product.create(data);

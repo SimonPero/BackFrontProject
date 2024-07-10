@@ -4,10 +4,10 @@ import { services } from "../utils/serviceContainer";
 const cartService = services.getCartService()
 
 export default class CartController {
-    async getCartById(req: Request, res: Response, next: NextFunction) {
+    async getCartByEmail(req: Request, res: Response, next: NextFunction) {
         try {
-            const id = parseInt(req.params.CustomerID);
-            const cart = await cartService.getCartById(id)
+            const { email} = req.body
+            const cart = await cartService.getCartByEmail(email)
             res.status(201).json(cart)
         } catch (error) {
             next(error)

@@ -1,4 +1,4 @@
-import { Cart, CartItems } from "../../DAO";
+import { Cart, CartItems, User } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import { ICartService } from "./ICartService";
 import { IUserService } from "../users/IUserService";
@@ -22,8 +22,10 @@ export default class CartService implements ICartService{
         }
     }
 
-    async getCartById(customerID: number): Promise<{ cart: Cart, items: CartItems[] }> {
+    async getCartByEmail(email: string): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
+            const user:User = await this.userService.getUserByEmail(email)
+            const customerID = user.customerID
             const foundCart = await Cart.findOne({ where: { customerID } })
             if (!foundCart) {
                 throw new AppError('Cart not found', 404, null, ErrorLevels.WARNING);
@@ -48,7 +50,7 @@ export default class CartService implements ICartService{
                 throw new AppError('Invalidad data', 400, null, ErrorLevels.WARNING)
             }
             const user = await this.userService.getUserByEmail(email)
-            const cart = await this.getCartById(user.customerID)
+            const cart = await this.getCartByEmail(user.customerID)
             this.cartItemsService.addItemsToCart(cart.cart.cartID, parsedProductID, parsedQuantity)
             return cart
         } catch (error) {
