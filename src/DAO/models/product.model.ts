@@ -1,7 +1,8 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
 import sequelize from '../../config/database';
+import { CartItems } from '..';
 
-// Define los atributos de tu modelo
+// Define the attributes of your model
 export interface ProductAttributes {
   productID: number;
   category: string;
@@ -11,12 +12,14 @@ export interface ProductAttributes {
   price: number;
   stock: number;
   imageUrl: string | null;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-// Define los atributos opcionales para la creación
-export interface ProductCreationAttributes extends Optional<ProductAttributes, 'productID'> {}
+// Define the optional attributes for creation
+export interface ProductCreationAttributes extends Optional<ProductAttributes, 'productID' | 'createdAt' | 'updatedAt'> { }
 
-// Define el modelo
+// Define the model
 class Product extends Model<ProductAttributes, ProductCreationAttributes> implements ProductAttributes {
   public productID!: number;
   public category!: string;
@@ -30,6 +33,15 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // Associations
+  public static associations: {
+    cartItems: Association<Product, CartItems>;
+  };
+
+  public static associate(models: { [key: string]: ModelStatic<Model> }) {
+    Product.hasMany(models.CartItems, { foreignKey: 'productID', as: 'cartItems' });
+  }
 }
 
 Product.init(
@@ -67,10 +79,14 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,
     tableName: 'products',
+    timestamps: true,
+    modelName: 'Product',
   }
 );
 

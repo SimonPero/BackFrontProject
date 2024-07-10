@@ -1,5 +1,6 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
 import sequelize from '../../config/database';
+import { Cart } from '..';
 
 export interface UserAttributes {
   customerID: number;
@@ -27,6 +28,14 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   // timestamps!
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  // Associations
+  public static associations: {
+    carts: Association<User, Cart>;
+  };
+
+  public static associate(models: {[key: string]: ModelStatic<Model>}) {
+    User.hasMany(models.Cart, { foreignKey: 'customerID', as: 'carts' });
+  }
 }
 
 User.init(
@@ -68,6 +77,8 @@ User.init(
   {
     sequelize,
     tableName: 'customers',
+    modelName: 'User',
+    timestamps: true
   }
 );
 

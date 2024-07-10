@@ -1,5 +1,6 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
 import sequelize from '../../../config/database';
+import { Cart, Product } from '../..';
 
 export interface CartItemsAttributes {
     cartItemID: number;
@@ -16,6 +17,16 @@ class CartItems extends Model<CartItemsAttributes, CartItemsCreationAttributes> 
     public cartID!: number;
     public productID!: number;
     public quantity!: number;
+    // Associations
+    public static associations: {
+        cart: Association<CartItems, Cart>;
+        product: Association<CartItems, Product>;
+    };
+
+    public static associate(models: {[key: string]: ModelStatic<Model>}) {
+        CartItems.belongsTo(models.Cart, { foreignKey: 'cartID', as: 'cart' });
+        CartItems.belongsTo(models.Product, { foreignKey: 'productID', as: 'product' });
+    }
 }
 
 CartItems.init(
@@ -41,6 +52,8 @@ CartItems.init(
     {
         sequelize,
         tableName: 'cart_items',
+        modelName: 'CartItems',
+        timestamps: true
     }
 );
 
