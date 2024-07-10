@@ -1,4 +1,4 @@
-import { CartItems } from "../../DAO";
+import { CartItems, Product } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import { ICartItemsService } from "./ICarItemsService";
 
@@ -25,7 +25,13 @@ export default class CartItemsService implements ICartItemsService{
 
     async getCartItemsByCartId(cartID: number): Promise<CartItems[]> {
         try {
-            const cartItems = await CartItems.findAll({ where: { cartID } });
+            const cartItems = await CartItems.findAll({
+                where: { cartID },
+                include: [{
+                    model: Product,
+                    as: 'product'
+                }]
+            });
             if (!cartItems || cartItems.length === 0) {
                 return [];
             }

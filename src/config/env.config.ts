@@ -8,7 +8,7 @@ dotenv.config({ path: `.env.${env}` });
 
 // Exporta las variables de entorno, asegurándose de que no sean undefined
 const config = {
-  port: process.env.PORT || '3000',
+  port: process.env.PORT || '8080',
   database: process.env.DATABASE || '',
   mySqlUser: process.env.MYSQLUSER || '',
   mySqlPass: process.env.MYSQLPASS || '',
