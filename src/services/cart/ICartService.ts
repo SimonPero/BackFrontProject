@@ -5,4 +5,5 @@ export interface ICartService {
     createCart(customerID: number): Promise<Cart>;
     getCartByEmail(email: string): Promise<{ cart: Cart, items: CartItems[] }>;
     addItemToCart(email: string, productID: string, quantity: string): Promise<{ cart: Cart, items: CartItems[] }>;
+    delProdInCart(cartID: string, productID: string): Promise<void>;
 }

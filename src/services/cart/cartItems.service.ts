@@ -2,7 +2,7 @@ import { CartItems, Product } from "../../DAO";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import { ICartItemsService } from "./ICarItemsService";
 
-export default class CartItemsService implements ICartItemsService{
+export default class CartItemsService implements ICartItemsService {
     async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems[]> {
         try {
             let cartItem = await CartItems.findOne({ where: { cartID, productID } });
@@ -42,6 +42,25 @@ export default class CartItemsService implements ICartItemsService{
                 throw error;
             } else {
                 throw new AppError('Error fetching Cart Items', 500, error, ErrorLevels.CRITICAL);
+            }
+        }
+    }
+
+    async delProdInCart(cartID: number, productID: number): Promise<number> {
+        try {
+            const deletedCount = await CartItems.destroy({
+                where: {
+                    productID: productID,
+                    cartID: cartID,
+                },
+            });
+            return deletedCount
+        } catch (error) {
+            console.error('Error in delProdInCart:', error);
+            if (error instanceof AppError) {
+                throw error;
+            } else {
+                throw new AppError('Error deleting prod from Cart', 500, error, ErrorLevels.CRITICAL);
             }
         }
     }
