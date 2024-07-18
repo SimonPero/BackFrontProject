@@ -4,8 +4,15 @@ export const product = z.object({
     name: z.string().min(1),
     description: z.string().min(1),
     size: z.string().min(1),
-    price: z.string().transform((val) => parseFloat(val)),
-    stock: z.string().transform((val) => parseInt(val, 10)),
-    category: z.string(),
-    image: z.string().optional(),
+    price: z.string().transform((val) => {
+        const parsed = parseFloat(val);
+        if (isNaN(parsed)) throw new Error("Invalid price");
+        return parsed;
+    }),
+    stock: z.string().transform((val) => {
+        const parsed = parseInt(val);
+        if (isNaN(parsed)) throw new Error("Invalid stock");
+        return parsed;
+    }),
+    category: z.string().min(1),
 });

@@ -10,7 +10,7 @@ const productRouter = Router();
 productRouter.get('/products', productController.findAllProds);
 productRouter.get('/products/:id', productController.findProdById);
 productRouter.put('/products/:id', authenticateJWT, upload.single('image'), productController.updateProd);
-productRouter.post('/products', authenticateJWT, upload.single('image'), productController.addProduct);
+productRouter.post('/products',authenticateJWT, upload.single('image'), validatorSchema(schema.product, "body"), productController.addProduct);
 productRouter.delete('/products/:id', authenticateJWT, productController.deleteById);
 
 export default productRouter;
