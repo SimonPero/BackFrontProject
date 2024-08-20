@@ -6,7 +6,6 @@ const authRouter = Router();
 
 authRouter.post("/auth/token", async (req: any, res: Response) => {
     const { email, name, surname } = req.body;
-
     //verify if user exist or create one
     let user = await userService.getUserByEmail(email)
     if (!user) {

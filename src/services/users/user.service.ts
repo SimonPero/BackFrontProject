@@ -2,7 +2,7 @@ import User, { UserCreationAttributes } from "../../DAO/models/user.model";
 import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
 import bcrypt from 'bcrypt';
 import { IUserService } from "./IUserService";
-import { ICartService } from "../cart/ICartService";
+import { ICartService } from "../carts/ICartService";
 
 export default class UserService implements IUserService {
     constructor(private cartService: ICartService) { }
