@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
 import sequelize from '../../config/database';
 import { Cart } from '..';
+import Order from './order.model';
 
 export interface UserAttributes {
   customerID: number;
@@ -31,10 +32,12 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   // Associations
   public static associations: {
     carts: Association<User, Cart>;
+    orders: Association<User, Order>
   };
 
   public static associate(models: {[key: string]: ModelStatic<Model>}) {
     User.hasMany(models.Cart, { foreignKey: 'customerID', as: 'carts' });
+    User.hasMany(models.Order, { foreignKey: 'ordersID', as: 'orders' })
   }
 }
 
