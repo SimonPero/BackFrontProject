@@ -1,10 +1,10 @@
-import { ICartItemsService } from "../services/cart/ICarItemsService";
-import { ICartService } from "../services/cart/ICartService";
+import { ICartItemsService } from "../services/carts/ICarItemsService";
+import { ICartService } from "../services/carts/ICartService";
 import { IUserService } from "../services/users/IUserService";
 import { IProductService } from "../services/products/IProductService";
 import UserService from "../services/users/user.service";
-import CartService from "../services/cart/cart.service";
-import CartItemsService from "../services/cart/cartItems.service";
+import CartService from "../services/carts/cart.service";
+import CartItemsService from "../services/carts/cartItems.service";
 import ProductService from "../services/products/product.service";
 
 class ServiceContainer {
