@@ -90,4 +90,4 @@ OrderDetail.init(
   }
 );
 
-export default OrderDetail;
+export default OrderDetail
