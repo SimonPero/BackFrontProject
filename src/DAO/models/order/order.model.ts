@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
-import sequelize from '../../config/database';
-import { CartItems, User } from '..';
+import sequelize from '../../../config/database';
+import { User } from '../../index';
 
 // Define the attributes of your model
 export interface OrdersAttributes {
