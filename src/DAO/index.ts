@@ -3,8 +3,8 @@ import Product from './models/product.model';
 import User from './models/user.model';
 import Cart from './models/cart/cart.model';
 import CartItems from './models/cart/cartItems.model';
-
-
+import Order from './models/order/order.model';
+import OrderDetail from './models/order/orderDetail.model';
 
 const models = {
   User: User,
@@ -37,4 +37,6 @@ export {
   User,
   Cart,
   CartItems,
+  Order,
+  OrderDetail
 };

@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional, Association, ModelStatic } from 'sequelize';
 import sequelize from '../../config/database';
 import { Cart } from '..';
-import Order from './order.model';
+import Order from './order/order.model';
 
 export interface UserAttributes {
   customerID: number;
