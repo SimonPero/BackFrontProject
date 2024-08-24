@@ -18,11 +18,25 @@ export default class ProductController {
     }
   }
 
-  async findAllProds(_req: Request, res: Response, next: NextFunction) {
+  async findAllProds(req: Request, res: Response, next: NextFunction) {
     try {
       const products = await productService.getAllProducts();
       if (products.length === 0) {
         res.status(200).json({ message: "La tabla de productos está vacía" });
+      } else {
+        res.status(200).json(products);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+  async findProdsPages(req: Request, res: Response, next: NextFunction) {
+    try {
+      const pageN = req.params.pageN
+      console.log(pageN)
+      const products = await productService.getAllProducts(parseInt(pageN));
+      if (products.length === 0) {
+        res.status(200).json([]);
       } else {
         res.status(200).json(products);
       }
