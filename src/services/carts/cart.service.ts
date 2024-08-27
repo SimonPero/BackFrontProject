@@ -1,5 +1,5 @@
 import { Cart, CartItems, User } from "../../DAO";
-import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
+import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import { ICartService } from "./ICartService";
 import { IUserService } from "../users/IUserService";
 import { ICartItemsService } from "./ICarItemsService";

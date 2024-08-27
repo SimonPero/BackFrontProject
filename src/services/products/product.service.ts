@@ -2,7 +2,7 @@ import Product, {
   ProductAttributes,
   ProductCreationAttributes,
 } from "../../DAO/models/product.model";
-import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
+import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import fs from "fs";
 import path from "path";
 import { IProductService } from "./IProductService";

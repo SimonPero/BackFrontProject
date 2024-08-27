@@ -9,11 +9,13 @@ import usersRouter from './routes/users.router';
 import authRouter from './routes/auth.router';
 import cookieParser from 'cookie-parser';
 import cartRouter from './routes/cart.router';
+import morganMiddleware from './logger/morgarLogger';
 
 const app = express();
 const port = envConfig.port
 
 syncDatabase();
+app.use(morganMiddleware);
 
 app.use(cors({
     origin: 'http://localhost:3000',
