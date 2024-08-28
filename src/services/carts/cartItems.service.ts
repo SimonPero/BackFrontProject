@@ -1,5 +1,5 @@
 import { CartItems, Product } from "../../DAO";
-import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
+import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import { ICartItemsService } from "./ICarItemsService";
 
 export default class CartItemsService implements ICartItemsService {

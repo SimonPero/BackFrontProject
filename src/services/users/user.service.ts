@@ -1,5 +1,5 @@
 import User, { UserCreationAttributes } from "../../DAO/models/user.model";
-import { AppError, ErrorLevels } from "../../middlewares/errorHandler";
+import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import bcrypt from 'bcrypt';
 import { IUserService } from "./IUserService";
 import { ICartService } from "../carts/ICartService";
