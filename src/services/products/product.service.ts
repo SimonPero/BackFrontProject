@@ -11,7 +11,6 @@ class ProductService implements IProductService {
   async createProduct(data: ProductCreationAttributes): Promise<Product> {
     try {
       const product = await Product.create(data);
-      //buscar codigo para cuando falla la creacion
       if (!product) {
         throw new AppError(
           "Product not created",
@@ -51,6 +50,7 @@ class ProductService implements IProductService {
           ErrorLevels.WARNING
         );
       }
+      
       return products;
     } catch (error) {
       if (error instanceof AppError) {
