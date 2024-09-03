@@ -8,3 +8,5 @@ node_modules/
 
 # errors log
 logs/
+
+coverage/

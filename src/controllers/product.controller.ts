@@ -33,7 +33,6 @@ export default class ProductController {
   async findProdsPages(req: Request, res: Response, next: NextFunction) {
     try {
       const pageN = req.params.pageN
-      console.log(pageN)
       const products = await productService.getAllProducts(parseInt(pageN));
       if (products.length === 0) {
         res.status(200).json([]);
