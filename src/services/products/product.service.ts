@@ -50,7 +50,7 @@ class ProductService implements IProductService {
           ErrorLevels.WARNING
         );
       }
-      
+
       return products;
     } catch (error) {
       if (error instanceof AppError) {
@@ -105,6 +105,7 @@ class ProductService implements IProductService {
       if (error instanceof AppError) {
         throw error;
       } else {
+        console.log(error);
         throw new AppError(
           "Error updating product",
           500,
@@ -114,8 +115,10 @@ class ProductService implements IProductService {
       }
     }
   }
+
   async deleteProductById(productId: string, imgUrl: string | null) {
     try {
+      const prod = await this.getProductById(productId);
       const deletedCount = await Product.destroy({
         where: {
           productID: productId,
@@ -138,7 +141,7 @@ class ProductService implements IProductService {
           }
         });
       }
-      return "borrado";
+      return prod;
     } catch (error) {
       if (error instanceof AppError) {
         throw error;

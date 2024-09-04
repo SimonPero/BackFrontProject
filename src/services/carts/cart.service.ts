@@ -81,19 +81,15 @@ export default class CartService implements ICartService {
         try {
             const parsedProductID = parseInt(productID);
             const parsedCartID = parseInt(cartID);
-
-            // Verificar la existencia del carrito
             const cart = await this.findCartByID(parsedCartID);
             if (!cart) {
                 throw new AppError('Cart not found', 404, 'Cart not found', ErrorLevels.WARNING);
             }
             const deletedCount = await this.cartItemsService.delProdInCart(parsedCartID, parsedProductID)
-            // Verificar si se eliminó algo
             if (deletedCount === 0) {
                 throw new AppError('Product not found in the cart', 404, 'Product not in cart', ErrorLevels.WARNING);
             }
         } catch (error) {
-            console.error('Error in delProdInCart:', error);
             if (error instanceof AppError) {
                 throw error;
             } else {
