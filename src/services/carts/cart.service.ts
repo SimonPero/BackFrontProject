@@ -25,6 +25,9 @@ export default class CartService implements ICartService {
     async getCartByEmail(email: string): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
             const user: User = await this.userService.getUserByEmail(email)
+            if(user === null){
+                throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
+            }
             const customerID = user.customerID
             const foundCart = await Cart.findOne({ where: { customerID } })
             if (!foundCart) {
