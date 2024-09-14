@@ -7,6 +7,7 @@ export interface CartItemsAttributes {
     cartID: number;
     productID: number;
     quantity: number;
+    price: number;
 }
 
 export interface CartItemsCreationAttributes extends Optional<CartItemsAttributes, 'cartItemID'> { }
@@ -17,6 +18,7 @@ class CartItems extends Model<CartItemsAttributes, CartItemsCreationAttributes> 
     public cartID!: number;
     public productID!: number;
     public quantity!: number;
+    public price!: number;
     // Associations
     public static associations: {
         cart: Association<CartItems, Cart>;
@@ -45,6 +47,10 @@ CartItems.init(
 
         },
         quantity: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        price: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },

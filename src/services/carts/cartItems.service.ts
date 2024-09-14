@@ -3,14 +3,15 @@ import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import { ICartItemsService } from "./ICarItemsService";
 
 export default class CartItemsService implements ICartItemsService {
-    async addItemsToCart(cartID: number, productID: number, quantity: number): Promise<CartItems[]> {
+    async addItemsToCart(cartID: number, prod: Product , quantity: number): Promise<CartItems[]> {
         try {
-            let cartItem = await CartItems.findOne({ where: { cartID, productID } });
+            let cartItem = await CartItems.findOne({ where: { cartID, productID:prod.dataValues.productID } });
             if (cartItem) {
                 cartItem.quantity += quantity;
+                cartItem.price = prod.dataValues.price
                 await cartItem.save();
             } else {
-                cartItem = await CartItems.create({ cartID, productID, quantity });
+                cartItem = await CartItems.create({ cartID, productID:prod.dataValues.productID, price:prod.dataValues.price, quantity });
             }
             return this.getCartItemsByCartId(cartID);
         } catch (error) {
