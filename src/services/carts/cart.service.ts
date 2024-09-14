@@ -1,4 +1,4 @@
-import { Cart, CartItems, User } from "../../DAO";
+import { Cart, CartItems, Product, User } from "../../DAO";
 import { AppError, ErrorLevels } from "../../utils/customError/errors";
 import { ICartService } from "./ICartService";
 import { IUserService } from "../users/IUserService";
@@ -25,6 +25,9 @@ export default class CartService implements ICartService {
     async getCartByEmail(email: string): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
             const user: User = await this.userService.getUserByEmail(email)
+            if(user === null){
+                throw new AppError('User not found', 404, null, ErrorLevels.WARNING);
+            }
             const customerID = user.customerID
             const foundCart = await Cart.findOne({ where: { customerID } })
             if (!foundCart) {
@@ -41,16 +44,15 @@ export default class CartService implements ICartService {
         }
     }
 
-    async addItemToCart(email: string, productID: string, quantity: string): Promise<{ cart: Cart, items: CartItems[] }> {
+    async addItemToCart(email: string, prod: Product, quantity: string): Promise<{ cart: Cart, items: CartItems[] }> {
         try {
-            const parsedProductID = parseInt(productID);
             const parsedQuantity = parseInt(quantity);
 
-            if (isNaN(parsedProductID) || isNaN(parsedQuantity)) {
+            if ( isNaN(parsedQuantity)) {
                 throw new AppError('Invalidad data', 400, null, ErrorLevels.WARNING)
             }
             const cart = await this.getCartByEmail(email)
-            this.cartItemsService.addItemsToCart(cart.cart.cartID, parsedProductID, parsedQuantity)
+            this.cartItemsService.addItemsToCart(cart.cart.cartID, prod, parsedQuantity)
             return cart
         } catch (error) {
             if (error instanceof AppError) {

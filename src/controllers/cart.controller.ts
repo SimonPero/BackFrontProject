@@ -17,7 +17,8 @@ export default class CartController {
     async addItemToCart(req: Request, res: Response, next: NextFunction) {
         try {
             const { email, productID, quantity } = req.body
-            const cart = await cartService.addItemToCart(email, productID, quantity)
+            const prod = await services.getProductService().getProductById(productID)
+            const cart = await cartService.addItemToCart(email, prod, quantity)
             res.status(201).json(cart)
         } catch (error) {
             next(error)
